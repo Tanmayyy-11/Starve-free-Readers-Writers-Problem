@@ -73,5 +73,18 @@ Writer_process
 }
 ```
 
+## Explanation
+This method allows any number of readers to enter the critical section simultaneously. Whenever a writer arrives, if there are still active readers 
+then the writer sets the flag - writer_available to true and waits for the write-mutex semaphore. We have  managed to solve the problem of starvation due to the FIFO nature of the semaphore queues. 
+
+If a writer arrives and there are still active readers then the writer simply waits until the write-mutex semaphore made available by the last terminating read operation.
+
+Whenever a write process arrives, it acquires the semaphore- entry and holds it until it terminates, this ensures that no other write or read operations are overlapped with its execution. Now suppose more read or write operations arrive before our write operation had terminated. Then these operations will be blocked in the queue of the entry semaphore in the same order that they arrived in and so will be resumed using our FIFO policy. This ensures that no operation will be starved and synchronisation is maintained.
+
+
+
+
+
+
 
 
