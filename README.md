@@ -81,6 +81,8 @@ If a writer arrives and there are still active readers then the writer simply wa
 
 Whenever a write process arrives, it acquires the semaphore- entry and holds it until it terminates, this ensures that no other write or read operations are overlapped with its execution. Now suppose more read or write operations arrive before our write operation had terminated. Then these operations will be blocked in the queue of the entry semaphore in the same order that they arrived in and so will be resumed using our FIFO policy. This ensures that no operation will be starved and synchronisation is maintained.
 
+When the last reader ends its execution and a writer is available, then the reader signals the write-mutex semaphore allowing the writer to start its execution. Note that the writer does not block the write mutex semaphore once it executes that allows the subsequent writers to continue execution just after. Now when a reader follows a writer, it waits on the entry semaphore, and due to the FIFO nature of the queue it is executed as per its schedule and synchronisation of the processes is maintained.
+
 
 
 
